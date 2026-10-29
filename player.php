@@ -9,7 +9,6 @@ if (isset($_GET['nom'])) {
         $player = getPlayer($pdo, $search);
     }
 }
-
 // energie
 if ($stamina_bar <=0) {
     echo "La barre de stamina est vide";
