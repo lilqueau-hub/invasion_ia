@@ -29,8 +29,8 @@ function saveFile(PDO $pdo): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Inventaire des ressources
-function inventoryRessources(
+// Ressources
+function allRessources(
     PDO $pdo,
     string $nom,
     string $type)
@@ -44,3 +44,8 @@ function inventoryRessources(
         ]);
 
     }
+
+// function inventoryRessources(PDO $pdo): array
+// {
+//     $sql = "SELECT * FROM stocker"
+// }

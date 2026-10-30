@@ -38,8 +38,7 @@ if (!password_verify($password, $utilisateur['mdp'])) {
 //regénerer l'id de la session après la vérification de mot de passe pour pouvoir conserver les données de la session
 session_regenerate_id(true);
 
-//enregistrer l'utilisateur dans la session
-$_SESSION['utilisateur_id'] = $utilisateur['player_id'];
-$_SESSION['utilisateur_nom'] = $utilisateur['nom'];
+$_SESSION['player_id'] = $utilisateur['player_id'];
+$_SESSION['player_nom'] = $utilisateur['nom'];
 
 echo "Bienvenue sur le site " . htmlspecialchars($utilisateur['nom']);

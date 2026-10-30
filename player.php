@@ -36,13 +36,11 @@ if ($health <= 0) {
     <p><?= htmlspecialchars($message) ?></p>
 <?php endif; ?>
 
-<form method="POST">
+<!-- <form method="POST">
     <h3>Création de personnage</h3>
 
     <label for="nom">Nom :</label>
     <input type="hidden" name="id" value="<?= $player['player_id'] ?>">
     <button type="submit">Enregistrer</button>
 
-</form>
-
-<!-- function createPlayer -->
+</form> -->

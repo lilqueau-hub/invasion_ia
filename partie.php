@@ -2,10 +2,8 @@
 
 <?php 
 
-// Connexion
-
 // ITEMS
-$getItems = ['materials'];
+$allRessources = ['materials'];
 $huntFood = 'true';
 
 // Jour
