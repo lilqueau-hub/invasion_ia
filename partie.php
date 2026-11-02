@@ -2,9 +2,7 @@
 
 <?php 
 
-// ITEMS
 
-// inventaire/stockage
 
 // Jour
 for ($day = 1; $day <= 30; $day++) {
