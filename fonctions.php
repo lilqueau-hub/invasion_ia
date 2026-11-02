@@ -59,5 +59,5 @@ function inventoryRessources(PDO $pdo): array
 function getRest(PDO $pdo){
    $sql = "SELECT health_bar FROM player";
     $stmt = $pdo->query($sql); 
-    return $stmt->fetchAll (PDO::FETCH_ASSOC)
+    return $stmt->fetchAll (PDO::FETCH_ASSOC);
 }

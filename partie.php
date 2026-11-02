@@ -3,7 +3,7 @@
 <?php 
 
 // ITEMS
-$allRessources = ['materials'];
+$allRessources = ['materials', 'food'];
 $getItems = 'true';
 // inventoryressources
 
@@ -27,10 +27,20 @@ for ($day = 1; $day <= 30; $day++) {
 <body>
     <h2>Invasion IA</h2>
     <div class="joueurCaractéristiques">
-       <h4><?=htmlspecialchars($nom)?></h4>
+        <h4><?=htmlspecialchars($nom)?></h4>
         <p>Points de vie : <?= htmlspecialchars($health_bar)?></p>
         <p>Energie : <?= htmlspecialchars($stamina_bar)?></p> 
     </div>
+    <div class="inventory">
+        <h4>Inventaire :</h4>
+        <p><?= htmlspecialchars($ressources)?></p>
+    </div>
+    <div class="base">
+        <h4>Base</h4>
+        <p>Etat de la base : <?php htmlspecialchars($base_status) ?></p>
+        <button type="">Réparer la base</button>
+    </div>
+    <button><a href="">Se reposer</a></button>
     
 </body>
 </html>
