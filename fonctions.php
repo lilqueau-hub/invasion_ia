@@ -16,7 +16,7 @@ function createPlayer(
         ]);  
     }
 
-function getPlayer(PDO $pdo, int $playerId): array
+function getPlayer(PDO $pdo, int $playerId): array|false
 {
     $sql = "SELECT player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id";
     $stmt = $pdo->prepare($sql);
@@ -25,11 +25,13 @@ function getPlayer(PDO $pdo, int $playerId): array
 }
 
 // Sauvegarder la partie
-function saveGame(PDO $pdo): array
+function saveGame(PDO $pdo, int $playerId, int $jour_actuel): void
 {
-    $sql = "SELECT * FROM partie";
-    $stmt = $pdo->query($sql);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $sql = "UPDATE partie SET jour_actuel = :jour_actuel WHERE player_id = :player_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'jour_actuel' => $jour_actuel,
+        'player_id' => $playerId]);
 }
 
 // Ressources
@@ -49,16 +51,20 @@ function allRessources(
     }
 
 // Stockage des ressourcess 
-function inventoryRessources(PDO $pdo): array
+function inventoryRessources(PDO $pdo, int $playerId): array
 {
-    $sql = "SELECT * FROM stocker";
-    $stmt = $pdo->query($sql);
+    $sql = "SELECT r.nom, r.type, s.quantite
+            FROM stocker s
+            JOIN ressources r ON r.ressource_id = s.ressource_id
+            WHERE s.player_id = :player_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['player_id' => $playerId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+ }
 
 // Se reposer
-function getRest(PDO $pdo){
-   $sql = "SELECT health_bar FROM player";
-    $stmt = $pdo->query($sql); 
-    return $stmt->fetchAll (PDO::FETCH_ASSOC);
-}
+// function getRest(PDO $pdo){
+//    $sql = "SELECT health_bar FROM player";
+//     $stmt = $pdo->query($sql); 
+//     return $stmt->fetchAll (PDO::FETCH_ASSOC);
+// }
