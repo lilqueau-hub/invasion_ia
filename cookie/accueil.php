@@ -17,6 +17,8 @@ if (isset($_COOKIE['nom'])) {
     <h1>Après l'invasion de l'IA</h1>
     <p>Bonjour <?= htmlspecialchars($nom) ?></p>
 
+    <button>Se déconnecter</button>
+
     <?php if ($nom !== ''): ?>
     <form action="supprimer_cookie.php" method="POST">
         <button type="submit">Supprimer les cookies</button>

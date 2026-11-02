@@ -1,7 +1,5 @@
 <?php require_once __DIR__ . '/fonctions.php';
 
-
-
 //joueur
 $search = '';
 if (isset($_GET['nom'])) {
