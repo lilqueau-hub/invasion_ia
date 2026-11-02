@@ -4,25 +4,25 @@
 function createPlayer(
     PDO $pdo,
     string $nom,
-    string $health_bar,
-    string $stamina_bar){
-        $sql = "INSERT INTO player (nom, health_bar, stamina_bar)
-        VALUES (:nom, :health_bar, :stamina_bar)";
+    string $email,
+    string $hash){
+        $sql = "INSERT INTO player (nom, email, password)
+        VALUES (:nom, :email, :password)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             'nom' => $nom,
-            'health_bar' => $health_bar,
-            'stamina_bar' => $stamina_bar
+            'email' => $email,
+            'password' => $hash
         ]);  
     }
 
-function getPlayer(PDO $pdo): array
+function getPlayer(PDO $pdo, int $playerId): array
 {
-    $sql = "SELECT * FROM player";
-    $stmt = $pdo->query($sql);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $sql = "SELECT player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['player_id' => $playerId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
-$player = getPlayer($pdo);
 
 // Sauvegarder la partie
 function saveGame(PDO $pdo): array
