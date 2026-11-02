@@ -9,10 +9,6 @@ if (isset($_GET['nom'])) {
     }
 }
 
-// joueur stamina_bar et health_bar
-$health_bar = 100;
-$stamina_bar = 100;
-
 // energie
 if ($stamina_bar <=0) {
     echo "La barre de stamina est vide";

@@ -3,16 +3,8 @@
 <?php 
 
 // ITEMS
-// $allRessources = ['materials', 'food'];
-// $getItems = 'true';
 
-// $allRessources = 
-
-// $ressourcesFood = ["viande", "fruit", "eau", "ration"];
-// $ressourcesItems = ["bois", "verre"];
-
-// inventoryressources
-
+// inventaire/stockage
 
 // Jour
 for ($day = 1; $day <= 30; $day++) {
@@ -55,6 +47,11 @@ for ($day = 1; $day <= 30; $day++) {
 
     <!-- Se reposer = passe la journée et fait remonter la stamina. -->
     <button><a href="">Se reposer</a></button>
+
+    <!-- Sauvegarder -->
+    <button><a href="">Sauvegarder la partie</a></button>
     
+    <!-- Quitter la partie -->
+    <button><a href="invasion_ia/accueil.php">Quitter la partie</a></button>
 </body>
 </html>

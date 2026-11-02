@@ -15,7 +15,6 @@ if (isset($_COOKIE['nom'])) {
 </head>
 <body>
     <h1>Après l'invasion de l'IA</h1>
-    <p>Bonjour <?= htmlspecialchars($nom) ?></p>
 
     <button>Se déconnecter</button>
 
@@ -25,16 +24,8 @@ if (isset($_COOKIE['nom'])) {
     </form>
 
     <?php else: ?>
-        <p>Bonjour nouveau survivant</p>
-        <form action="enregistrer_cookie.php">
-            <input type="text" name="nom" placeholder="Votre nom" required>
-            <button type="submit">Mémoriser mon nom</button>
-
-            <label for="nom">Nom :</label>
-            <input type="hidden" name="id" value=" $player['player_id']">
-            <button type="submit">Enregistrer</button>
-
-        </form>
+        <p>Bonjour <?= htmlspecialchars($nom) ?></p>
+        
         <div class="presentation">
             <h4>Contexte</h4>
             
@@ -50,5 +41,6 @@ if (isset($_COOKIE['nom'])) {
         </div>
     <?php endif; ?>
     <button><a href="partie.php">Commencer la survie</a></button>
+    <!-- <button><a href="">Reprendre la partie</a></button> -->
 </body>
 </html>
