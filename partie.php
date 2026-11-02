@@ -31,15 +31,22 @@ for ($day = 1; $day <= 30; $day++) {
         <p>Points de vie : <?= htmlspecialchars($health_bar)?></p>
         <p>Energie : <?= htmlspecialchars($stamina_bar)?></p> 
     </div>
+
     <div class="inventory">
         <h4>Inventaire :</h4>
         <p><?= htmlspecialchars($ressources)?></p>
     </div>
+
     <div class="base">
         <h4>Base</h4>
-        <p>Etat de la base : <?php htmlspecialchars($base_status) ?></p>
+        <!-- <p>Etat de la base : $base_status</p> -->
         <button type="">Réparer la base</button>
     </div>
+
+    <!-- La barre des points de vie remonte -->
+    <button type="">Se nourrir</button>
+
+    <!-- Se reposer = passe la journée et fait remonter la stamina. -->
     <button><a href="">Se reposer</a></button>
     
 </body>

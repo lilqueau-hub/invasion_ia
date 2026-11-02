@@ -8,7 +8,7 @@ $_SESSION = [];
 //détruire la session côté serveur
 session_destroy();
 
-// rédiriger vers la page de connexion
-header('Location: connexion.php');
+// rédiriger vers la page de connexion/inscription
+header('Location: connexion_inscription.php');
 
 exit;
