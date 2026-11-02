@@ -20,13 +20,13 @@ if(strlen($password) < 10) {
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
 try {
-    $sql = "INSERT INTO user (nom, email, password)
+    $sql = "INSERT INTO player (nom, email, password)
             VALUES (:nom, :email, :password)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         'nom'=> $nom,
         'email' => $email,
-        'password' => $mdp
+        'password' => $hash
     ]);
     echo "Compte créé avec succès !";
 } catch (PDOException $e) {
@@ -36,5 +36,3 @@ try {
         throw $e;
     }
 }
-
-var_dump($hash);

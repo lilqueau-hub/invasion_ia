@@ -1,7 +1,6 @@
 <?php require_once __DIR__ . '/database.php';
 
 // Création de compte
-
 function createPlayer(
     PDO $pdo,
     string $nom,
@@ -49,13 +48,15 @@ function allRessources(
 
     }
 
+// Stockage des ressourcess 
 function inventoryRessources(PDO $pdo): array
 {
-    $sql = "SELECT * FROM ressources";
+    $sql = "SELECT * FROM stocker";
     $stmt = $pdo->query($sql);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Se reposer
 function getRest(PDO $pdo){
    $sql = "SELECT health_bar FROM player";
     $stmt = $pdo->query($sql); 
