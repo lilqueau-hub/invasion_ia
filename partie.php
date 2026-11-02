@@ -3,9 +3,16 @@
 <?php 
 
 // ITEMS
-$allRessources = ['materials', 'food'];
-$getItems = 'true';
+// $allRessources = ['materials', 'food'];
+// $getItems = 'true';
+
+// $allRessources = 
+
+// $ressourcesFood = ["viande", "fruit", "eau", "ration"];
+// $ressourcesItems = ["bois", "verre"];
+
 // inventoryressources
+
 
 // Jour
 for ($day = 1; $day <= 30; $day++) {
