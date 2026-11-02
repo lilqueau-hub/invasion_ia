@@ -4,7 +4,8 @@
 
 // ITEMS
 $allRessources = ['materials'];
-$huntFood = 'true';
+$getItems = 'true';
+// inventoryressources
 
 // Jour
 for ($day = 1; $day <= 30; $day++) {
@@ -24,6 +25,12 @@ for ($day = 1; $day <= 30; $day++) {
     <title>Invasion IA</title>
 </head>
 <body>
+    <h2>Invasion IA</h2>
+    <div class="joueurCaractéristiques">
+       <h4><?=htmlspecialchars($nom)?></h4>
+        <p>Points de vie : <?= htmlspecialchars($health_bar)?></p>
+        <p>Energie : <?= htmlspecialchars($stamina_bar)?></p> 
+    </div>
     
 </body>
 </html>

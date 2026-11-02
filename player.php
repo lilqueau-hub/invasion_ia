@@ -1,7 +1,8 @@
 <?php require_once __DIR__ . '/fonctions.php';
 
-//joueur
 
+
+//joueur
 $search = '';
 if (isset($_GET['nom'])) {
     $search = trim($_GET['nom']);
@@ -9,6 +10,11 @@ if (isset($_GET['nom'])) {
         $player = getPlayer($pdo, $search);
     }
 }
+
+// joueur stamina_bar et health_bar
+$health_bar = 100;
+$stamina_bar = 100;
+
 // energie
 if ($stamina_bar <=0) {
     echo "La barre de stamina est vide";
@@ -29,6 +35,7 @@ if ($health <= 0) {
     echo "En forme <br>" ;
 }
 
+
 ?>
 <?php $message = ''; ?>
 
@@ -40,7 +47,7 @@ if ($health <= 0) {
     <h3>Création de personnage</h3>
 
     <label for="nom">Nom :</label>
-    <input type="hidden" name="id" value="<?= $player['player_id'] ?>">
+    <input type="hidden" name="id" value=" $player['player_id'">
     <button type="submit">Enregistrer</button>
 
 </form> -->
