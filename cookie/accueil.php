@@ -5,15 +5,16 @@ if (isset($_COOKIE['nom'])) {
     $nom = '';
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Après l'invasion de l'IA</title>
 </head>
 <body>
-    <h1>Bienvenue sur notre site</h1>
+    <h1>Après l'invasion de l'IA</h1>
     <p>Bonjour <?= htmlspecialchars($nom) ?></p>
 
     <?php if ($nom !== ''): ?>
@@ -26,6 +27,11 @@ if (isset($_COOKIE['nom'])) {
         <form action="enregistrer_cookie.php">
             <input type="text" name="nom" placeholder="Votre nom" required>
             <button type="submit">Mémoriser mon nom</button>
+
+            <label for="nom">Nom :</label>
+            <input type="hidden" name="id" value=" $player['player_id']">
+            <button type="submit">Enregistrer</button>
+
         </form>
         <div class="presentation">
             <h4>Contexte</h4>
