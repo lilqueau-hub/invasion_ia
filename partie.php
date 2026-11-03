@@ -2,7 +2,23 @@
 
 <?php 
 
+// Récupérer des ressources
+$ressources = $pdo->query(
+    'SELECT ressource_id, nom, type FROM ressources'
+    ) -> fetchAll(PDO::FETCH_ASSOC);
 
+// Diminuer quantité de l'inventaire
+if (isset($_POST['Se nourrir']['Réparer la base'])) {
+    $ressourceId = (int) $_POST['ressource_id'];
+
+    if(isset($_SESSION['inventoryRessources'][$ressourceId])) {
+        $_SESSION['inventoryRessources'][$ressourceId]['quantite'];
+
+        if ($_SESSION['inventoryRessources'][$ressourceId]['quantite'] <= 0) {
+            unset($_SESSION['inventoryRessources'][$ressourceId]);
+        }
+    }
+}
 
 // Jour
 for ($day = 1; $day <= 30; $day++) {
@@ -29,25 +45,30 @@ for ($day = 1; $day <= 30; $day++) {
         <p>Energie : <?= htmlspecialchars($stamina_bar)?></p> 
     </div>
 
+    <button>Récupérer des ressources</button>
+
     <div class="inventory">
         <h4>Inventaire :</h4>
-        <p><?= htmlspecialchars($ressources)?></p>
-    </div>
+        <?php foreach($ressources as $ressource) ?>
+            <p><?= htmlspecialchars($ressource['nom']['ressource_id']['type']); ?></p>
+        <?php endforeach; ?>
+    </div>    
 
     <div class="base">
         <h4>Base</h4>
         <!-- <p>Etat de la base : $base_status</p> -->
-        <button type="">Réparer la base</button>
+        <p>Durabilité : <?= htmlspecialchars($durability)?></p>
+        <button type="submit">Réparer la base</button>
+
+        <h4>Nourriture</h4>
+        <!-- La barre des points de vie remonte -->
+        <button type="submit">Se nourrir</button>
     </div>
 
-    <!-- La barre des points de vie remonte -->
-    <button type="">Se nourrir</button>
-
-    <!-- Se reposer = passe la journée et fait remonter la stamina. -->
-    <button><a href="">Se reposer</a></button>
-
-    <!-- Sauvegarder -->
-    <button><a href="">Sauvegarder la partie</a></button>
+    
+    <!-- Sauvegarder / repose = passer la journée et fait remonter la stamina -->
+     <!-- saveGame -->
+    <button>Sauvegarder la partie</button>
     
     <!-- Quitter la partie -->
     <button><a href="invasion_ia/accueil.php">Quitter la partie</a></button>

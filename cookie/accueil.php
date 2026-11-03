@@ -1,9 +1,24 @@
+<?php require_once __DIR__ . '/database.php'; ?>
+
 <?php
+
 if (isset($_COOKIE['nom'])) {
     $nom = $_COOKIE['nom'];
 } else {
     $nom = '';
 }
+
+$players = [];
+$search = '';
+
+if (isset($_GET['nom'])) {
+    $search = trim($_GET['nom']);
+
+    if($search !== '') {
+        $players = searchPlayerByName($pdo, $search);
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -42,5 +57,17 @@ if (isset($_COOKIE['nom'])) {
     <?php endif; ?>
     <button><a href="partie.php">Commencer la survie</a></button>
     <!-- <button><a href="">Reprendre la partie</a></button> -->
+
+    <form method="GET">
+        <label for="nom">Nom du joueur :</label>
+        <input 
+            type="text"
+            id="player_id"
+            name="nom"
+            value="<?= htmlspecialchars($search) ?>"
+            required>
+            <button type="submit">Rechercher le joueur</button>
+    </form>
+
 </body>
 </html>
