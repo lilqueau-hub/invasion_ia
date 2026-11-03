@@ -81,6 +81,6 @@ for ($day = 1; $day <= 30; $day++) {
     <button>Sauvegarder la partie</button>
     
     <!-- Quitter la partie -->
-    <button><a href="invasion_ia/accueil.php">Quitter la partie</a></button>
+    <button><a href="accueil.php">Quitter la partie</a></button>
 </body>
 </html>
