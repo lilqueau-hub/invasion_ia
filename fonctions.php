@@ -37,13 +37,15 @@ function saveGame(PDO $pdo, int $playerId, int $jour_actuel): void
 // Ressources
 function allRessources(
     PDO $pdo,
+    string $ressourceId,
     string $nom,
     string $type)
     {
-        $sql = "INSERT INTO ressources (nom, type)
+        $sql = "INSERT INTO ressources (ressource_id, nom, type)
         VALUES(:nom, :type)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
+            'ressource_id' => $ressourceId,
             'nom' => $nom,
             'type' => $type
         ]);
