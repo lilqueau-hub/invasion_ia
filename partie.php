@@ -29,6 +29,8 @@ for ($day = 1; $day <= 30; $day++) {
     echo $day;
 }
 
+// Limite PdV 
+
 // Sauvegarde la partie
 
 ?>
