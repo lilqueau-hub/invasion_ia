@@ -97,7 +97,10 @@ $nom = false;
 
         <h4>Nourriture</h4>
         <!-- La barre des points de vie remonte -->
-        <button type="submit">Se nourrir</button>
+        <form method="POST" action="">
+            <button type="submit" name="">Se nourrir</button>
+        </form>
+        
     </div>
 
     <!-- Sauvegarder / repose = passer la journée et fait remonter la stamina -->
