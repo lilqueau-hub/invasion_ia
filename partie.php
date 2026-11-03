@@ -56,7 +56,7 @@ $nom = false;
         <p>Jour actuel: <?=htmlspecialchars($jour_actuel)?></p>
     </div>
 
-    <button>Récupérer des ressources</button>
+    <button type="submit">Récupérer des ressources</button>
 
     <div class="inventory">
         <h4>Inventaire :</h4>

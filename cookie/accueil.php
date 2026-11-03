@@ -30,7 +30,7 @@ if (isset($_GET['nom'])) {
 <body>
     <h1>Après l'invasion de l'IA</h1>
 
-    <button>Se déconnecter</button>
+    <!-- <button>Se déconnecter</button> -->
 
     <?php if ($nom !== ''): ?>
     <form action="supprimer_cookie.php" method="POST">
