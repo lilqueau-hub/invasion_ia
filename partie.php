@@ -21,13 +21,13 @@ if (isset($_POST['Se nourrir']['Réparer la base'])) {
 }
 
 // Jour
-for ($day = 1; $day <= 30; $day++) {
+for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
     
-    if ($day === 30) {
+    if ($jour_actuel === 30) {
         echo "Victoire";
         break;
     }
-    echo $day;
+    echo $jour_actuel;
 }
 
 // Limite PdV 
@@ -53,7 +53,7 @@ $nom = false;
         <h4>Nom:<?=htmlspecialchars($nom) ?></h4>
         <p>Points de vie : <?= htmlspecialchars($health_bar)?></p>
         <p>Energie : <?= htmlspecialchars($stamina_bar)?></p> 
-        <p>Jour actuel: <?php $day ?></p>
+        <p>Jour actuel: <?=htmlspecialchars($jour_actuel)?></p>
     </div>
 
     <button>Récupérer des ressources</button>
@@ -63,7 +63,7 @@ $nom = false;
         <?php if (isset($_GET['nom']) && $search !== ''): ?>
             <?php if(!empty($ressource)): ?>
             <?php foreach($ressources as $ressource) ?>
-                <p><?= htmlspecialchars($ressource['nom']['ressource_id']['type']); ?></p>
+                <p><?= htmlspecialchars($ressource['ressource_id']['nom']['type']); ?></p>
             <?php endif; ?>
         <?php endif; ?>
     </div>    
@@ -84,7 +84,7 @@ $nom = false;
     <?php 
     
     ?>
-    <button>Sauvegarder la partie</button>
+    <button type="submit">Se reposer</button>
     
     <!-- Quitter la partie -->
     <button><a href="accueil.php">Quitter la partie</a></button>
