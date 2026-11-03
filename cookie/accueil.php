@@ -1,6 +1,5 @@
-<?php require_once __DIR__ . '/../database.php'; ?>
+<?php require_once __DIR__ . '/../database.php';
 
-<?php
 
 if (isset($_COOKIE['nom'])) {
     $nom = $_COOKIE['nom'];
@@ -56,7 +55,6 @@ if (isset($_GET['nom'])) {
         </div>
     <?php endif; ?>
     <button><a href="../partie.php">Commencer la survie</a></button>
-    <!-- <button><a href="">Reprendre la partie</a></button> -->
 
     <form method="GET">
         <label for="nom">Nom du joueur :</label>

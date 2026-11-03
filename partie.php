@@ -22,6 +22,7 @@ if (isset($_POST['Se nourrir']['Réparer la base'])) {
 
 // Jour
 for ($day = 1; $day <= 30; $day++) {
+    
     if ($day === 30) {
         echo "Victoire";
         break;
@@ -30,8 +31,12 @@ for ($day = 1; $day <= 30; $day++) {
 }
 
 // Limite PdV 
+$health_bar = false;
+$stamina_bar = true;
+$durability = true;
+$nom = false;
 
-// Sauvegarde la partie
+// 
 
 ?>
 
@@ -45,7 +50,7 @@ for ($day = 1; $day <= 30; $day++) {
 <body>
     <h2>Invasion IA</h2>
     <div class="joueurCaractéristiques">
-        <h4><?=htmlspecialchars($nom)?></h4>
+        <h4>Nom:<?=htmlspecialchars($nom)?></h4>
         <p>Points de vie : <?= htmlspecialchars($health_bar)?></p>
         <p>Energie : <?= htmlspecialchars($stamina_bar)?></p> 
     </div>
@@ -82,5 +87,6 @@ for ($day = 1; $day <= 30; $day++) {
     
     <!-- Quitter la partie -->
     <button><a href="accueil.php">Quitter la partie</a></button>
+
 </body>
 </html>

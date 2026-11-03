@@ -4,7 +4,7 @@ require_once __DIR__ . '/database.php';
 
 //récuperer les données envoyées par le formulaire de connexion
 $email = trim($_POST['email'] ?? '');
-$password = trim($_POST['mdp'] ?? '');
+$password = trim($_POST['password'] ?? '');
 
 //vérifier si les champs ont été remplis
 if ($email === '' || $password === '') {
@@ -12,7 +12,7 @@ if ($email === '' || $password === '') {
 }
 
 // rechercher l'utilisateur dans la base de données
-$sql = "SELECT player_id, nom, email, mdp FROM player
+$sql = "SELECT player_id, nom, email, password FROM player
         WHERE email = :email";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
@@ -31,7 +31,7 @@ if (!$utilisateur) {
 }
 
 // vérifier le mot de passe
-if (!password_verify($password, $utilisateur['mdp'])) {
+if (!password_verify($password, $utilisateur['password'])) {
     exit ("Le mot de passe incorrect.");
 }
 
@@ -40,5 +40,8 @@ session_regenerate_id(true);
 
 $_SESSION['player_id'] = $utilisateur['player_id'];
 $_SESSION['player_nom'] = $utilisateur['nom'];
+
+header('Location: /invasion_ia/cookie/accueil.php');
+exit;
 
 echo "Bienvenue sur le site " . htmlspecialchars($utilisateur['nom']);
