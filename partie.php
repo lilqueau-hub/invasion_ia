@@ -50,9 +50,10 @@ $nom = false;
 <body>
     <h2>Invasion IA</h2>
     <div class="joueurCaractéristiques">
-        <h4>Nom:<?=htmlspecialchars($nom)?></h4>
+        <h4>Nom:<?=htmlspecialchars($nom) ?></h4>
         <p>Points de vie : <?= htmlspecialchars($health_bar)?></p>
         <p>Energie : <?= htmlspecialchars($stamina_bar)?></p> 
+        <p>Jour actuel: <?php $day ?></p>
     </div>
 
     <button>Récupérer des ressources</button>
