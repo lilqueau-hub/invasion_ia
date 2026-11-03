@@ -1,6 +1,5 @@
 <?php require_once __DIR__ . '/../database.php';
 
-
 if (isset($_COOKIE['nom'])) {
     $nom = $_COOKIE['nom'];
 } else {
@@ -18,8 +17,12 @@ if (isset($_GET['nom'])) {
     }
 }
 
-?>
+// Déconnexion
+// if (isset($_POST['deconnexion.php'])) {
+//     deconnexionBtn();
+// }
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +32,8 @@ if (isset($_GET['nom'])) {
 </head>
 <body>
     <h1>Après l'invasion de l'IA</h1>
+
+    <form method="" action=""></form>
 
     <!-- <button>Se déconnecter</button> -->
 

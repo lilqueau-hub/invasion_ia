@@ -1,11 +1,26 @@
 <?php require_once __DIR__ . '/fonctions.php'; ?>
 
 <?php 
+// Récupérer des ressources
+if (isset($_POST['recuperer']) && $_POST['recuperer'] === 'recuperer') {
+    try {
+        $query = "SELECT ressource_id, nom, type FROM ressources ORDER BY RAND() LIMIT 3 ";
+        $stmt = $dbname->query($query);
+        $ressources = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach($ressources as $ressource) {
+            echo "ID : " . $ressource['ressource_id'] . " - Nom : " . $ressource['nom'] . " - Nom : " . $ressource['type'] . "<br>";
+        } catch(PDOException $e) {
+            echo "Erreur de base de données :" . $e->getMessage();
+        }
+        exit;
+    }
+}
 
 // Récupérer des ressources
-$ressources = $pdo->query(
-    'SELECT ressource_id, nom, type FROM ressources'
-    ) -> fetchAll(PDO::FETCH_ASSOC);
+// $ressources = $pdo->query(
+//     'SELECT ressource_id, nom, type FROM ressources'
+//     ) -> fetchAll(PDO::FETCH_ASSOC);
+
 
 // Diminuer quantité de l'inventaire
 if (isset($_POST['Se nourrir']['Réparer la base'])) {
@@ -20,15 +35,20 @@ if (isset($_POST['Se nourrir']['Réparer la base'])) {
     }
 }
 
-// Jour
-for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
-    
-    if ($jour_actuel === 30) {
-        echo "Victoire";
-        break;
-    }
-    echo $jour_actuel;
+// Sauvegarde
+if (isset($_POST['saveGameBTN'])) {
+    saveGame();
 }
+
+// Jour
+// for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
+    
+//     if ($jour_actuel === 30) {
+//         echo "Victoire";
+//         break;
+//     }
+//     echo $jour_actuel;
+// }
 
 // Limite PdV 
 $health_bar = false;
@@ -36,7 +56,6 @@ $stamina_bar = true;
 $durability = true;
 $nom = false;
 
-// 
 
 ?>
 
@@ -56,8 +75,10 @@ $nom = false;
         <p>Jour actuel: <?=htmlspecialchars($jour_actuel)?></p>
     </div>
 
-    <button type="submit">Récupérer des ressources</button>
-
+    <form method="POST" action="">
+        <button type="submit" name="recuperer">Récupérer des ressources</button>
+    </form>
+    
     <div class="inventory">
         <h4>Inventaire :</h4>
         <?php if (isset($_GET['nom']) && $search !== ''): ?>
@@ -80,11 +101,9 @@ $nom = false;
     </div>
 
     <!-- Sauvegarder / repose = passer la journée et fait remonter la stamina -->
-    <!-- saveGame -->
-    <?php 
-    
-    ?>
-    <button type="submit">Se reposer</button>
+    <form method="POST" action="">
+        <button type="submit" name="saveGameBTN">Se reposer</button>
+    </form>
     
     <!-- Quitter la partie -->
     <button><a href="accueil.php">Quitter la partie</a></button>
