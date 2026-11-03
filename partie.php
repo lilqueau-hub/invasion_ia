@@ -28,6 +28,9 @@ for ($day = 1; $day <= 30; $day++) {
     }
     echo $day;
 }
+
+// Sauvegarde la partie
+
 ?>
 
 <!DOCTYPE html>
@@ -49,9 +52,12 @@ for ($day = 1; $day <= 30; $day++) {
 
     <div class="inventory">
         <h4>Inventaire :</h4>
-        <?php foreach($ressources as $ressource) ?>
-            <p><?= htmlspecialchars($ressource['nom']['ressource_id']['type']); ?></p>
-        <?php endforeach; ?>
+        <?php if (isset($_GET['nom']) && $search !== ''): ?>
+            <?php if(!empty($ressource)): ?>
+            <?php foreach($ressources as $ressource) ?>
+                <p><?= htmlspecialchars($ressource['nom']['ressource_id']['type']); ?></p>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>    
 
     <div class="base">
@@ -65,9 +71,11 @@ for ($day = 1; $day <= 30; $day++) {
         <button type="submit">Se nourrir</button>
     </div>
 
-    
     <!-- Sauvegarder / repose = passer la journée et fait remonter la stamina -->
-     <!-- saveGame -->
+    <!-- saveGame -->
+    <?php 
+    
+    ?>
     <button>Sauvegarder la partie</button>
     
     <!-- Quitter la partie -->
