@@ -68,14 +68,14 @@ function inventoryRessources(PDO $pdo, int $playerId): array
 }
 
 // ajouter de l'inventaire
-function addRessources(PDO $pdo, int $playerId, int $ressourceId, int $quantite): void
+function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite): void
 {
     $sql = "INSERT INTO stocker(ressource_id, partie_id, quantite) 
             VALUES(:ressource_id, :partie_id, :quantite)
             ON DUPLICATE KEY UPDATE quantite = quantite + VALUES(quantite)";
     $stmt = $pdo->prepare($sql);
     $stmt -> execute([
-        'player_id' => $playerId,
+        'partie_id' => $partieId,
         'ressource_id' => $ressourceId,
         'quantite' => $quantite
     ]);
