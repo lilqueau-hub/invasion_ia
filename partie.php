@@ -1,10 +1,11 @@
 <?php require_once __DIR__ . '/fonctions.php'; ?>
 
 <?php 
+
 // Récupérer des ressources
 if (isset($_POST['recuperer']) && $_POST['recuperer'] === 'recuperer') {
     try {
-        $query = "SELECT ressource_id, nom, type FROM ressources ORDER BY RAND() LIMIT 3 ";
+        $query = "SELECT ressource_id, nom, type FROM ressources ORDER BY RAND() LIMIT 4 ";
         $stmt = $dbname->query($query);
         $ressources = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach($ressources as $ressource) {
@@ -16,11 +17,15 @@ if (isset($_POST['recuperer']) && $_POST['recuperer'] === 'recuperer') {
     }
 }
 
-// Récupérer des ressources
-// $ressources = $pdo->query(
-//     'SELECT ressource_id, nom, type FROM ressources'
-//     ) -> fetchAll(PDO::FETCH_ASSOC);
 
+// allRessources
+$ressources = $pdo->query(
+    'SELECT * FROM allRessources()'
+    ) -> fetchAll(PDO::FETCH_ASSOC);
+
+if (isset($_SERVER['ressources'])) {
+    allRessources();
+}
 
 // Diminuer quantité de l'inventaire
 if (isset($_POST['Se nourrir']['Réparer la base'])) {
@@ -32,7 +37,7 @@ if (isset($_POST['Se nourrir']['Réparer la base'])) {
         if ($_SESSION['inventoryRessources'][$ressourceId]['quantite'] <= 0) {
             unset($_SESSION['inventoryRessources'][$ressourceId]);
         }
-    }
+    } 
 }
 
 // Sauvegarde
@@ -40,15 +45,6 @@ if (isset($_POST['saveGameBTN'])) {
     saveGame();
     
 }
-// function saveGame(PDO $pdo, int $playerId, int $jour_actuel): void
-// {
-//     $sql = "UPDATE partie SET jour_actuel = :jour_actuel WHERE player_id = :player_id";
-//     $stmt = $pdo->prepare($sql);
-//     $stmt->execute([
-//         'jour_actuel' => $jour_actuel,
-//         'player_id' => $playerId]);
-// }
-
 
 // Jour
 // for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {

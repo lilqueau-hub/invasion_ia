@@ -16,6 +16,7 @@ function createPlayer(
         ]);  
     }
 
+// Trouver le joueur 
 function getPlayer(PDO $pdo, int $playerId): array|false
 {
     $sql = "SELECT player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id";
@@ -63,3 +64,14 @@ function inventoryRessources(PDO $pdo, int $playerId): array
     $stmt->execute(['player_id' => $playerId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+// Récupérer des ressources
+
+// Diminuer les PDV et l'énergie
+// function losePlayer (PDO $pdo, int $playerId): array 
+// {
+//     $sql = "SELECT p.health_bar, p.stamina_bar
+//             FROM player p
+//             
+// }
+// player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id"
