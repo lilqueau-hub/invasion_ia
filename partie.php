@@ -10,7 +10,7 @@ if (isset($_POST['recuperer']) && $_POST['recuperer'] === 'recuperer') {
         $ressources = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach($ressources as $ressource) {
             echo "ID : " . $ressource['ressource_id'] . " - Nom : " . $ressource['nom'] . " - Nom : " . $ressource['type'] . "<br>";
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo "Erreur de base de données :" . $e->getMessage();
         }
         exit;
@@ -23,27 +23,35 @@ $ressources = $pdo->query(
     'SELECT * FROM allRessources()'
     ) -> fetchAll(PDO::FETCH_ASSOC);
 
-if (isset($_SERVER['ressources'])) {
+if (isset($_GET['ressources'])) {
     allRessources();
 }
 
 // Diminuer quantité de l'inventaire
-if (isset($_POST['Se nourrir']['Réparer la base'])) {
-    $ressourceId = (int) $_POST['ressource_id'];
+if (isset($_POST['nourrir']['reparer'])) {
+    $playerId = (int) $_POST['player_id'];
+    $ressources= allRessources();
 
-    if(isset($_SESSION['inventoryRessources'][$ressourceId])) {
-        $_SESSION['inventoryRessources'][$ressourceId]['quantite'];
+    if (isset($_SESSION['inventoryRessources'][$ressources])) {
+        $_SESSION['inventoryRessources']['quantite'];
 
-        if ($_SESSION['inventoryRessources'][$ressourceId]['quantite'] <= 0) {
-            unset($_SESSION['inventoryRessources'][$ressourceId]);
+        if ($_SESSION['inventoryRessources']['quantite'] <= 0) {
+            unset($_SESSION['inventoryRessources']);
         }
-    } 
+    }
+
+    // if (isset($_SESSION['inventoryRessources'][$ressourceId][$ressourceType])) {
+    //     $_SESSION['inventoryRessources'][$ressourceId]['quantite'];
+
+    //     if ($_SESSION['inventoryRessources'][$ressourceId]['quantite'] <= 0)
+    // }
 }
+
+
 
 // Sauvegarde
 if (isset($_POST['saveGameBTN'])) {
     saveGame();
-    
 }
 
 // Jour
@@ -99,12 +107,15 @@ $nom = false;
         <h4>Base</h4>
         <!-- <p>Etat de la base : $base_status</p> -->
         <p>Durabilité : <?= htmlspecialchars($durability)?></p>
-        <button type="submit">Réparer la base</button>
+        <form method="POST">
+            <button type="submit" name="reparer">Réparer la base</button>
+        </form>
+        
 
         <h4>Nourriture</h4>
         <!-- La barre des points de vie remonte -->
         <form method="POST" action="">
-            <button type="submit" name="">Se nourrir</button>
+            <button type="submit" name="nourrir">Se nourrir</button>
         </form>
         
     </div>

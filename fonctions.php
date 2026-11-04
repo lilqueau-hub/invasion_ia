@@ -75,3 +75,5 @@ function inventoryRessources(PDO $pdo, int $playerId): array
 //             
 // }
 // player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id"
+
+// Conséquences d'actions sur diff ressources
