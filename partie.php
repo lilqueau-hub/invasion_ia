@@ -2,29 +2,22 @@
 
 <?php 
 
+// allRessources
+// $ressources = $pdo->query(
+//     'SELECT * FROM allRessources()'
+//     ) -> fetchAll(PDO::FETCH_ASSOC);
+
+
+
 // Récupérer des ressources
-if (isset($_POST['recuperer']) && $_POST['recuperer'] === 'recuperer') {
+if (isset($_POST['recuperer'])) {
     try {
         $query = "SELECT ressource_id, nom, type FROM ressources ORDER BY RAND() LIMIT 4 ";
-        $stmt = $dbname->query($query);
+        $stmt = $pdo->query($query);
         $ressources = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach($ressources as $ressource) {
-            echo "ID : " . $ressource['ressource_id'] . " - Nom : " . $ressource['nom'] . " - Nom : " . $ressource['type'] . "<br>";
-        } catch (PDOException $e) {
+    } catch (PDOException $e) {
             echo "Erreur de base de données :" . $e->getMessage();
         }
-        exit;
-    }
-}
-
-
-// allRessources
-$ressources = $pdo->query(
-    'SELECT * FROM allRessources()'
-    ) -> fetchAll(PDO::FETCH_ASSOC);
-
-if (isset($_GET['ressources'])) {
-    allRessources();
 }
 
 // Diminuer quantité de l'inventaire
@@ -39,33 +32,29 @@ if (isset($_POST['nourrir']['reparer'])) {
             unset($_SESSION['inventoryRessources']);
         }
     }
-
-    // if (isset($_SESSION['inventoryRessources'][$ressourceId][$ressourceType])) {
-    //     $_SESSION['inventoryRessources'][$ressourceId]['quantite'];
-
-    //     if ($_SESSION['inventoryRessources'][$ressourceId]['quantite'] <= 0)
-    // }
 }
-
-
 
 // Sauvegarde
 if (isset($_POST['saveGameBTN'])) {
     saveGame();
 }
 
-// Jour
-// for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
-    
-//     if ($jour_actuel === 30) {
-//         echo "Victoire";
-//         break;
-//     }
-//     echo $jour_actuel;
+// if(isset($_POST['resetGameBTN'])) {
+//     resetGame();
 // }
 
+// Jour
+for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
+    
+    if ($jour_actuel === 30) {
+        echo "Victoire";
+        break;
+    }
+    echo $jour_actuel;
+}
+
 // Limite PdV 
-$health_bar = false;
+$health_bar = true;
 $stamina_bar = true;
 $durability = true;
 $nom = false;
@@ -83,9 +72,10 @@ $nom = false;
 <body>
     <h2>Invasion IA</h2>
     <div class="joueurCaractéristiques">
-        <h4>Nom:<?=htmlspecialchars($nom) ?></h4>
-        <p>Points de vie : <?= htmlspecialchars($health_bar)?></p>
-        <p>Energie : <?= htmlspecialchars($stamina_bar)?></p> 
+        <h4>Nom:<?=htmlspecialchars($nom)?> </h4>
+        <p>Points de vie : <?=htmlspecialchars($health_bar)?></p>
+        <p>Energie : <?=htmlspecialchars($stamina_bar)?></p> 
+
         <p>Jour actuel: <?=htmlspecialchars($jour_actuel)?></p>
     </div>
 
@@ -125,6 +115,12 @@ $nom = false;
         <button type="submit" name="saveGameBTN">Se reposer</button>
     </form>
     
+
+    <form method="POST" action="">
+        <button type="reset" name="resetGameBTN">Rejouer la partie</button>
+    </form>
+    
+
     <!-- Quitter la partie -->
     <button><a href="accueil.php">Quitter la partie</a></button>
 

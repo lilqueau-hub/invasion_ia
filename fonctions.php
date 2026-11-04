@@ -35,22 +35,24 @@ function saveGame(PDO $pdo, int $playerId, int $jour_actuel): void
         'player_id' => $playerId]);
 }
 
+// récuperer la partie du joueur
+function getGame(PDO $pdo, int $playerId): array|false
+{
+    $sql = "SELECT * FROM partie
+    WHERE player_id = :player_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['player_id' => $playerId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 // Ressources
-function allRessources(
-    PDO $pdo,
-    string $ressourceId,
-    string $nom,
-    string $type)
+function allRessources(PDO $pdo): array
     {
-        $sql = "INSERT INTO ressources (ressource_id, nom, type)
-        VALUES(:nom, :type)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            'ressource_id' => $ressourceId,
-            'nom' => $nom,
-            'type' => $type
-        ]);
-
+        $sql = "SELECT ressource_id, nom, type
+                FROM ressources
+                ORDER BY RAND()
+                LIMIT 4";
+        $stmt = $pdo->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 // Stockage des ressourcess 
@@ -65,6 +67,20 @@ function inventoryRessources(PDO $pdo, int $playerId): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// ajouter de l'inventaire
+function addRessources(PDO $pdo, int $playerId, int $ressourceId, int $quantite): void
+{
+    $sql = "INSERT INTO stocker(ressource_id, partie_id, quantite) 
+            VALUES(:ressource_id, :partie_id, :quantite)
+            ON DUPLICATE KEY UPDATE quantite = quantite + VALUES(quantite)";
+    $stmt = $pdo->prepare($sql);
+    $stmt -> execute([
+        'player_id' => $playerId,
+        'ressource_id' => $ressourceId,
+        'quantite' => $quantite
+    ]);
+}
+
 // Récupérer des ressources
 
 // Diminuer les PDV et l'énergie
@@ -76,4 +92,4 @@ function inventoryRessources(PDO $pdo, int $playerId): array
 // }
 // player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id"
 
-// Conséquences d'actions sur diff ressources
+// Conséquences d'actions sur diff ressource
