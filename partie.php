@@ -2,13 +2,6 @@
 
 <?php 
 
-// allRessources
-// $ressources = $pdo->query(
-//     'SELECT * FROM allRessources()'
-//     ) -> fetchAll(PDO::FETCH_ASSOC);
-
-
-
 // Récupérer des ressources
 if (isset($_POST['recuperer'])) {
     try {

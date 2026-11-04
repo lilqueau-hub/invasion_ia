@@ -81,7 +81,6 @@ function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite)
     ]);
 }
 
-// Récupérer des ressources
 
 // Diminuer les PDV et l'énergie
 // function losePlayer (PDO $pdo, int $playerId): array 
