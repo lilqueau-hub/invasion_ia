@@ -13,7 +13,7 @@ if (isset($_GET['nom'])) {
     $search = trim($_GET['nom']);
 
     if($search !== '') {
-        $players = searchPlayerByName($pdo, $search);
+        $players = getPlayer($pdo, $search);
     }
 }
 

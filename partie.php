@@ -38,7 +38,17 @@ if (isset($_POST['Se nourrir']['Réparer la base'])) {
 // Sauvegarde
 if (isset($_POST['saveGameBTN'])) {
     saveGame();
+    
 }
+// function saveGame(PDO $pdo, int $playerId, int $jour_actuel): void
+// {
+//     $sql = "UPDATE partie SET jour_actuel = :jour_actuel WHERE player_id = :player_id";
+//     $stmt = $pdo->prepare($sql);
+//     $stmt->execute([
+//         'jour_actuel' => $jour_actuel,
+//         'player_id' => $playerId]);
+// }
+
 
 // Jour
 // for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
