@@ -17,7 +17,7 @@ if (isset($_GET['nom'])) {
     }
 }
 
-$GetGame = getGame();
+// $GetGame = getGame();
 // Déconnexion
 // if (isset($_POST['deconnexion.php'])) {
 //     deconnexionBtn();
