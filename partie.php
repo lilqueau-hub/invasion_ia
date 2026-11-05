@@ -1,63 +1,38 @@
-<?php require_once __DIR__ . '/fonctions.php'; ?>
+<?php
+session_start();
+require_once __DIR__ . '/fonctions.php';
 
-<?php 
+$playerId = isset($_SESSION['player_id']) ? (int) $_SESSION['player_id'] : 0;
+$playerInfo = $playerId > 0 ? getPlayer($pdo, $playerId) : [];
+$baseInfo = infoBase($pdo);
+$ressources = [];
+$gameSave = $playerId > 0 ? getGame($pdo, $playerId) : [];
 
-// Informations du joueur
-$PlayerInfo = infoPlayer();
-
-// Information de la base
-$BaseInfo = infoBase();
-
-// Récupérer des ressources
 if (isset($_POST['recuperer'])) {
-    try {
-        $query = "SELECT ressource_id, nom, type FROM ressources ORDER BY RAND() LIMIT 4 ";
-        $stmt = $pdo->query($query);
-        $ressources = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-            echo "Erreur de base de données :" . $e->getMessage();
-        }
+    $ressources = allRessources($pdo);
 }
 
-// Diminuer quantité de l'inventaire
-if (isset($_POST['nourrir']['reparer'])) {
-    $playerId = (int) $_POST['player_id'];
-    $ressources= allRessources();
+if (isset($_POST['reparer'])) {
+    foreach ($baseInfo as &$InfoBase) {
+        $InfoBase['durability'] = min(100, (int) $InfoBase['durability'] + 10);
+    }
+    unset($InfoBase);
+}
 
-    if (isset($_SESSION['inventoryRessources'][$ressources])) {
-        $_SESSION['inventoryRessources']['quantite'];
-
-        if ($_SESSION['inventoryRessources']['quantite'] <= 0) {
-            unset($_SESSION['inventoryRessources']);
-        }
+if (isset($_POST['nourrir'])) {
+    if ($playerInfo) {
+        $playerInfo['health_bar'] = min(100, (int) $playerInfo['health_bar'] + 10);
+        $playerInfo['stamina_bar'] = min(100, (int) $playerInfo['stamina_bar'] + 5);
     }
 }
 
-// Sauvegarde
 if (isset($_POST['saveGameBTN'])) {
-    saveGame();
+    if ($playerId > 0) {
+        $jourActuel = isset($gameSave['jour_actuel']) ? (int) $gameSave['jour_actuel'] : 1;
+        saveGame($pdo, $playerId, $jourActuel);
+        $gameSave = getGame($pdo, $playerId);
+    }
 }
-$GameSave = saveGame();
-
-// if(isset($_POST['resetGameBTN'])) {
-//     resetGame();
-// }
-
-// Jour
-// for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
-    
-//     if ($jour_actuel === 30) {
-//         echo "Victoire";
-//         break;
-//     }
-//     echo $jour_actuel;
-// }
-
-// Limite PdV 
-// $health_bar = true;
-// $stamina_bar = true;
-// $durability = true;
-// $nom = false;
 ?>
 
 <!DOCTYPE html>
@@ -79,45 +54,44 @@ $GameSave = saveGame();
             <p>Energie: <?=htmlspecialchars($InfoPlayer['stamina_bar']) ?></p>
         <?php endforeach; ?>
 
-        <?php foreach($GameSave as $SavingGame) ?>
-        <p>Jour actuel: <?=htmlspecialchars($SavingGame['jour_actuel'])?></p>
-        
+        <?php if (!empty($gameSave)): ?>
+            <p>Jour actuel : <?= htmlspecialchars((string) $gameSave['jour_actuel']) ?></p>
+        <?php endif; ?>
     </div>
 
     <form method="POST" action="">
         <button type="submit" name="recuperer">Récupérer des ressources</button>
     </form>
-    
+
     <div class="inventory">
         <h4>Inventaire :</h4>
-        <?php if (isset($_GET['nom']) && $search !== ''): ?>
-            <?php if(!empty($ressource)): ?>
-            <?php foreach($ressources as $ressource) ?>
-                <p><?= htmlspecialchars($ressource['ressource_id']['nom']['type']); ?></p>
-            <?php endif; ?>
+        <?php if (!empty($ressources)): ?>
+            <?php foreach ($ressources as $ressource): ?>
+                <p><?= htmlspecialchars($ressource['nom']) ?> - <?= htmlspecialchars($ressource['type']) ?></p>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>Aucune ressource récupérée pour le moment.</p>
         <?php endif; ?>
-    </div>    
+    </div>
 
     <div class="base">
         <h4>Base</h4>
-        <!-- <p>Etat de la base : $base_status</p> -->
-        <?php foreach ($BaseInfo as $InfoBase): ?>
-            <p>Durabilité :<? htmlspecialchars($InfoBase['durability']) ?> </p>
+        <?php foreach ($baseInfo as $InfoBase): ?>
+            <p>Durabilité : <?= htmlspecialchars((string) $InfoBase['durability']) ?></p>
         <?php endforeach; ?>
-        <form method="POST">
-            <button type="submit" name="addRessources">Réparer la base</button>
+
+        <form method="POST" action="">
+            <button type="submit" name="reparer">Réparer la base</button>
         </form>
         
 
         <h4>Nourriture</h4>
-        <!-- La barre des points de vie remonte -->
         <form method="POST" action="">
             <button type="submit" name="nourrir">Se nourrir</button>
         </form>
         
     </div>
 
-    <!-- Sauvegarder -->
     <form method="POST" action="">
         <button type="submit" name="saveGameBTN">Sauvegarder</button>
     </form>
