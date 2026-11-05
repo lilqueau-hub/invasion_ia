@@ -17,6 +17,7 @@ if (isset($_GET['nom'])) {
     }
 }
 
+$GetGame = getGame();
 // Déconnexion
 // if (isset($_POST['deconnexion.php'])) {
 //     deconnexionBtn();
@@ -70,6 +71,10 @@ if (isset($_GET['nom'])) {
             value="<?= htmlspecialchars($search) ?>"
             required>
             <button type="submit">Rechercher le joueur</button>
+    </form>
+
+    <form method="GET">
+        <button type="submit" name="GetGame">Récupérer la partie</button>
     </form>
 
 </body>

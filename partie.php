@@ -2,6 +2,12 @@
 
 <?php 
 
+// Informations du joueur
+$PlayerInfo = infoPlayer();
+
+// Information de la base
+$BaseInfo = infoBase();
+
 // Récupérer des ressources
 if (isset($_POST['recuperer'])) {
     try {
@@ -31,28 +37,27 @@ if (isset($_POST['nourrir']['reparer'])) {
 if (isset($_POST['saveGameBTN'])) {
     saveGame();
 }
+$GameSave = saveGame();
 
 // if(isset($_POST['resetGameBTN'])) {
 //     resetGame();
 // }
 
 // Jour
-for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
+// for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
     
-    if ($jour_actuel === 30) {
-        echo "Victoire";
-        break;
-    }
-    echo $jour_actuel;
-}
+//     if ($jour_actuel === 30) {
+//         echo "Victoire";
+//         break;
+//     }
+//     echo $jour_actuel;
+// }
 
 // Limite PdV 
-$health_bar = true;
-$stamina_bar = true;
-$durability = true;
-$nom = false;
-
-
+// $health_bar = true;
+// $stamina_bar = true;
+// $durability = true;
+// $nom = false;
 ?>
 
 <!DOCTYPE html>
@@ -65,11 +70,18 @@ $nom = false;
 <body>
     <h2>Invasion IA</h2>
     <div class="joueurCaractéristiques">
-        <h4>Nom:<?=htmlspecialchars($nom)?> </h4>
-        <p>Points de vie : <?=htmlspecialchars($health_bar)?></p>
-        <p>Energie : <?=htmlspecialchars($stamina_bar)?></p> 
 
-        <p>Jour actuel: <?=htmlspecialchars($jour_actuel)?></p>
+        <!-- <h4>Nom :htmlspecialchars($nom</h4> -->
+        
+        <?php foreach ($PlayerInfo as $InfoPlayer): ?>
+            <h4>Nom: <? htmlspecialchars($InfoPlayer['nom'])  ?></h4>
+            <p>Points de vie: <?= htmlspecialchars($InfoPlayer['health_bar']) ?></p>
+            <p>Energie: <?=htmlspecialchars($InfoPlayer['stamina_bar']) ?></p>
+        <?php endforeach; ?>
+
+        <?php foreach($GameSave as $SavingGame) ?>
+        <p>Jour actuel: <?=htmlspecialchars($SavingGame['jour_actuel'])?></p>
+        
     </div>
 
     <form method="POST" action="">
@@ -89,9 +101,11 @@ $nom = false;
     <div class="base">
         <h4>Base</h4>
         <!-- <p>Etat de la base : $base_status</p> -->
-        <p>Durabilité : <?= htmlspecialchars($durability)?></p>
+        <?php foreach ($BaseInfo as $InfoBase): ?>
+            <p>Durabilité :<? htmlspecialchars($InfoBase['durability']) ?> </p>
+        <?php endforeach; ?>
         <form method="POST">
-            <button type="submit" name="reparer">Réparer la base</button>
+            <button type="submit" name="addRessources">Réparer la base</button>
         </form>
         
 
@@ -103,12 +117,15 @@ $nom = false;
         
     </div>
 
-    <!-- Sauvegarder / repose = passer la journée et fait remonter la stamina -->
+    <!-- Sauvegarder -->
     <form method="POST" action="">
-        <button type="submit" name="saveGameBTN">Se reposer</button>
+        <button type="submit" name="saveGameBTN">Sauvegarder</button>
     </form>
-    
 
+    <!-- Passer la nuit, passer à un autre jour -->
+    <!-- <form method="POST" action=""></form> -->
+    
+    <!-- Reset le jeu -->
     <form method="POST" action="">
         <button type="reset" name="resetGameBTN">Rejouer la partie</button>
     </form>

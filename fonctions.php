@@ -44,6 +44,35 @@ function getGame(PDO $pdo, int $playerId): array|false
     $stmt->execute(['player_id' => $playerId]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+// Données du joueur
+// function infoPlayer(PDO $pdo, int $playerId, int $baseId, int $health_bar, int $stamina_bar, int $durability) : array
+// {
+//     $sql = "SELECT b.durability, p.health_bar, p.stamina_bar
+//             FROM base b
+//             JOIN player p ON p.player_id = b.player_id
+//             WHERE b.base_id = :base_id" ;
+//     $stmt = $pdo->prepare($sql);
+//     $stmt ->execute(['base_id' => $baseId]);
+//     return $stmt->fetch(PDO::FETCH_ASSOC);
+// }
+
+function infoPlayer(PDO $pdo): array
+{
+    $sql = "SELECT player_id, nom, health_bar, stamina_bar
+            FROM player ";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function infoBase(PDO $pdo): array
+{
+    $sql = "SELECT base_id, durability
+            FROM base";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 // Ressources
 function allRessources(PDO $pdo): array
     {
@@ -81,6 +110,27 @@ function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite)
     ]);
 }
 
+// Montrer données
+
+// function resetGame(PDO $pdo, int $partieId, int $playerId):array
+// {
+//     $sql =""
+// }
+
+// function resetGame (PDO $pdo, int $playerId, int $jour_actuel, int $partieId, int $quantite): void
+// {
+//     $sql = "UPDATE partie SET jour_actuel"
+
+// }
+
+// function saveGame(PDO $pdo, int $playerId, int $jour_actuel): void
+// {
+//     $sql = "UPDATE partie SET jour_actuel = :jour_actuel WHERE player_id = :player_id";
+//     $stmt = $pdo->prepare($sql);
+//     $stmt->execute([
+//         'jour_actuel' => $jour_actuel,
+//         'player_id' => $playerId]);
+// }
 
 // Diminuer les PDV et l'énergie
 // function losePlayer (PDO $pdo, int $playerId): array 
@@ -90,5 +140,8 @@ function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite)
 //             
 // }
 // player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id"
+
+
+
 
 // Conséquences d'actions sur diff ressource
