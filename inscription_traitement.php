@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/config/database.php';
 
 // récupérer les données saisies par l'utilisateur
 $nom = trim($_POST['nom'] ?? '');
