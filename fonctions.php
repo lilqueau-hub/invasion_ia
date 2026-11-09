@@ -5,7 +5,8 @@ function createPlayer(
     PDO $pdo,
     string $nom,
     string $email,
-    string $hash){
+    string $hash): void 
+    {
         $sql = "INSERT INTO player (nom, email, password)
         VALUES (:nom, :email, :password)";
         $stmt = $pdo->prepare($sql);
@@ -23,6 +24,19 @@ function getPlayer(PDO $pdo, int $playerId): array|false
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['player_id' => $playerId]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+//créer la partie
+function createGame(PDO $pdo, int $playerId): void
+{
+    $sql = "INSERT INTO partie (player_id, jour_actuel)
+            VALUES (:player_id, 1)";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'player_id' => $playerId
+    ]);
 }
 
 // Sauvegarder la partie
@@ -57,20 +71,31 @@ function getGame(PDO $pdo, int $playerId): array|false
 //     return $stmt->fetch(PDO::FETCH_ASSOC);
 // }
 
-function infoPlayer(PDO $pdo): array
-{
-    $sql = "SELECT player_id, nom, health_bar, stamina_bar
-            FROM player ";
-    $stmt = $pdo->query($sql);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+// function infoPlayer(PDO $pdo): array
+// {
+//     $sql = "SELECT player_id, nom, health_bar, stamina_bar
+//             FROM player 
+//             WHERE player_id = :player_id";
+//     $stmt = $pdo->prepare($sql);
 
-function infoBase(PDO $pdo): array
+//     $stmt->execute([
+//         'player_id' => $playerId
+//     ]);
+//     return $stmt->fetch(PDO::FETCH_ASSOC);
+// }
+
+function infoBase(PDO $pdo, int $playerId): array|false
 {
-    $sql = "SELECT base_id, durability
-            FROM base";
-    $stmt = $pdo->query($sql);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $sql = "SELECT b.base_id, b.durability
+            FROM base b
+            JOIN partie p
+            ON p.partie_id = b.partie_id
+            Where p.player_id = :player_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'player_id' => $playerId
+    ]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 // Ressources
@@ -110,7 +135,6 @@ function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite)
     ]);
 }
 
-// Montrer données
 
 // function resetGame(PDO $pdo, int $partieId, int $playerId):array
 // {
@@ -123,15 +147,6 @@ function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite)
 
 // }
 
-// function saveGame(PDO $pdo, int $playerId, int $jour_actuel): void
-// {
-//     $sql = "UPDATE partie SET jour_actuel = :jour_actuel WHERE player_id = :player_id";
-//     $stmt = $pdo->prepare($sql);
-//     $stmt->execute([
-//         'jour_actuel' => $jour_actuel,
-//         'player_id' => $playerId]);
-// }
-
 // Diminuer les PDV et l'énergie
 // function losePlayer (PDO $pdo, int $playerId): array 
 // {
@@ -140,8 +155,5 @@ function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite)
 //             
 // }
 // player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id"
-
-
-
 
 // Conséquences d'actions sur diff ressource
