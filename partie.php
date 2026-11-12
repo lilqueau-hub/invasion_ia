@@ -1,6 +1,7 @@
 <?php 
 session_start();
-require_once __DIR__ . '/fonctions.php';
+require_once __DIR__ . 'src/fonctions.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 $playerId = (int) $_SESSION['player_id'];
 // Informations du joueur

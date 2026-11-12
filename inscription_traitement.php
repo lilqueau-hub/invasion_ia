@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 // récupérer les données saisies par l'utilisateur
 $nom = trim($_POST['nom'] ?? '');
