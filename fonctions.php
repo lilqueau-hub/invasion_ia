@@ -71,19 +71,6 @@ function getGame(PDO $pdo, int $playerId): array|false
 //     return $stmt->fetch(PDO::FETCH_ASSOC);
 // }
 
-// function infoPlayer(PDO $pdo): array
-// {
-//     $sql = "SELECT player_id, nom, health_bar, stamina_bar
-//             FROM player 
-//             WHERE player_id = :player_id";
-//     $stmt = $pdo->prepare($sql);
-
-//     $stmt->execute([
-//         'player_id' => $playerId
-//     ]);
-//     return $stmt->fetch(PDO::FETCH_ASSOC);
-// }
-
 function infoBase(PDO $pdo, int $playerId): array|false
 {
     $sql = "SELECT b.base_id, b.durability
@@ -135,6 +122,14 @@ function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite)
     ]);
 }
 
+// Passer au jour suivant
+// function nextDay(PDO $pdo, int $jour_actuel):void {
+//     $sql = "UPDATE partie SET jour_actuel = :jour_actuel WHERE player_id = :player_id";
+//     $stmt = $pdo->prepare($sql);
+//     $stmt->execute([
+//         'jour_actuel' => $jour_actuel,
+//         'player_id' => $playerId]);
+// }
 
 // function resetGame(PDO $pdo, int $partieId, int $playerId):array
 // {

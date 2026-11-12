@@ -6,6 +6,7 @@ if (isset($_COOKIE['nom'])) {
     $nom = '';
 }
 
+$createGame = [];
 $players = [];
 $search = '';
 
@@ -17,6 +18,9 @@ if (isset($_GET['nom'])) {
     }
 }
 
+if (isset($_GET['createGame'])) {
+    $createGame = createGame($pdo, $playerId);
+}
 // $GetGame = getGame();
 // Déconnexion
 // if (isset($_POST['deconnexion.php'])) {
@@ -60,7 +64,10 @@ if (isset($_GET['nom'])) {
             </ul>
         </div>
     <?php endif; ?>
-    <button><a href="../partie.php">Commencer la survie</a></button>
+    <form method="GET">
+        <button name="createGame"><a href="../partie.php">Commencer la survie</a></button>
+    </form>
+    
 
     <form method="GET">
         <label for="nom">Nom du joueur :</label>

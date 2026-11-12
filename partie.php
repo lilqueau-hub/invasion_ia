@@ -23,6 +23,8 @@ if(isset($_POST['nextdayBTN']) && $gameSave !== false) {
 
 // Ressources
 $ressources = [];
+$allRessources = allRessources($pdo, $playerId);
+$addRessources = addRessources($pdo, $playerId);
 
 // Sauvegarder le jeu
 // if (isset($_POST['saveGameBTN'])) {
@@ -32,7 +34,7 @@ $ressources = [];
 
 // Récupérer des ressources
 if (isset($_POST['recuperer'])) {
-    $ressources = allRessources($pdo);
+    $allRessources = allRessources($pdo);
 }
 // if (isset($_POST['recuperer'])) {
 //     try {
@@ -60,6 +62,19 @@ if (isset($_POST['nourrir']))
 }
 
 // Inventaire 
+if (isset($_POST['stocker'])) {
+    $playerId =(int) $_POST['player_id'];
+    $inventoryRessources= inventoryRessources($pdo);
+    $ressources = allRessources($pdo);
+
+    if (isset($_SESSION['inventoryRessources'][$ressources][$inventoryRessources])) {
+        $_SESSION['inventoryRessources']['quantite'];
+
+        if ($_SESSION['inventoryRessources']['quantite'] <= 0) {
+            unset($_SESSION['inventoryRessources']);
+        }
+    }
+}
 
 // Diminuer quantité de l'inventaire
 if (isset($_POST['nourrir']['reparer'])) {
@@ -76,8 +91,12 @@ if (isset($_POST['nourrir']['reparer'])) {
 }
 
 // Se reposer
+if (isset($_POST['passer'])) {
+    $playerId =(int) $_POST['player_id'];
+    $nextDay = nextDay($pdo);
 
-
+    if(isset($_SESSION['nextDay']));
+}
 
 // if(isset($_POST['resetGameBTN'])) {
 //     resetGame();
@@ -166,7 +185,7 @@ if (isset($_POST['nourrir']['reparer'])) {
     
 
     <!-- Quitter la partie -->
-    <button><a href="../accueil.php">Quitter la partie</a></button>
+    <button><a href="/../accueil.php">Quitter la partie</a></button>
 
 </body>
 </html>

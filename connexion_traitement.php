@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/../database.php';
+require_once __DIR__ . '/database.php';
 
 //récuperer les données envoyées par le formulaire de connexion
 $email = trim($_POST['email'] ?? '');
@@ -19,29 +19,27 @@ $stmt->execute([
     'email' => $email
 ]);
 
-$utilisateur = $stmt->fetch();
+$player = $stmt->fetch();
 
 echo '<pre>';
-var_dump($utilisateur);
+var_dump($player);
 echo '</pre>';
 
 // vérifier si l'utilisateur existe
-if (!$utilisateur) {
+if (!$player) {
     exit("Vérifiez les champs saisis.");
 }
 
 // vérifier le mot de passe
-if (!password_verify($password, $utilisateur['password'])) {
+if (!password_verify($password, $player['password'])) {
     exit ("Le mot de passe incorrect.");
 }
 
 //regénerer l'id de la session après la vérification de mot de passe pour pouvoir conserver les données de la session
 session_regenerate_id(true);
 
-$_SESSION['player_id'] = $utilisateur['player_id'];
-$_SESSION['player_nom'] = $utilisateur['nom'];
+$_SESSION['player_id'] = $player['player_id'];
+$_SESSION['player_nom'] = $player['nom'];
 
 header('Location: /invasion_ia/cookie/accueil.php');
 exit;
-
-echo "Bienvenue sur le site " . htmlspecialchars($utilisateur['nom']);
