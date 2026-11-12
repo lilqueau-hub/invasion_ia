@@ -24,7 +24,7 @@ if(isset($_POST['nextdayBTN']) && $gameSave !== false) {
 // Ressources
 $ressources = [];
 $allRessources = allRessources($pdo, $playerId);
-$addRessources = addRessources($pdo, $playerId);
+// $addRessources = addRessources($pdo, $playerId);
 
 // Sauvegarder le jeu
 // if (isset($_POST['saveGameBTN'])) {
