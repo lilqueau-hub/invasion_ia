@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '../config/database.php';
+<?php require_once __DIR__ . '/database.php';
 
 // Création de compte
 function createPlayer(

@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '../config/database.php';
+<?php require_once __DIR__ . '/../database.php';
 
 if (isset($_COOKIE['nom'])) {
     $nom = $_COOKIE['nom'];

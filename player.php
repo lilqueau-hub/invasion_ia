@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/fonctions.php';
+<?php require_once __DIR__ . 'fonctions.php';
 
 //joueur
 $search = '';
