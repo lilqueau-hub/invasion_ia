@@ -178,7 +178,7 @@ if (isset($_POST['nourrir']['reparer'])) {
     
 
     <!-- Quitter la partie -->
-    <button><a href="">Quitter la partie</a></button>
+    <button><a href="/../accueil.php">Quitter la partie</a></button>
 
 </body>
 </html>
