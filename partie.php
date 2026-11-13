@@ -9,25 +9,33 @@ $playerInfo = getPlayer($pdo, $playerId);
 $baseInfo = infoBase($pdo, $playerId);
 // Sauvegarde du joueur
 $gameSave = getGame($pdo, $playerId);
+
+if ($gameSave === false) {
+    createGame($pdo, $playerId);
+    $gameSave = $getGame($pdo, $playerId);
+}
 // Jour suivant nextDay
-$nextDay = ($gameSave !== false);
+// $nextDay = ($gameSave !== false);
 
 // Passer au jour suivant
-if(isset($_POST['nextdayBTN']) && $nextDay !==false) {
+if(isset($_POST['nextdayBTN']) && $gameSave !== false) {
     $jourActuel = (int) $gameSave ['jour_actuel'];
     $nextDay = $jourActuel + 1; 
     saveGame($pdo, $playerId, $nextDay);
-    $gameSave = getGame($pdo, $playerId);
+    $gameSave = getGame($pdo, $playerId);   
+} else {
+    echo "Aucune partie trouvé";
 }
 
-
-//Passer au jour suivant
-// if(isset($_POST['nextdayBTN']) && $gameSave !== false) {
-//     $jourActuel = (int) $gameSave['jour_actuel'];
-//     $nouveauJour = $jourActuel + 1;
-//     saveGame($pdo, $playerId, $nouveauJour);
-//     $gameSave = getGame($pdo, $playerId);
+// for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
+    
+//     if ($jour_actuel === 30) {
+//         echo "Victoire";
+//         break;
+//     }
+//     echo $jour_actuel;
 // }
+
 
 // Ressources
 $ressources = [];
@@ -37,15 +45,15 @@ $ressources = [];
 if (isset($_POST['recuperer'])) {
     $allRessources = allRessources($pdo);
 }
-// if (isset($_POST['recuperer'])) {
-//     try {
-//         $query = "SELECT ressource_id, nom, type FROM ressources ORDER BY RAND() LIMIT 4 ";
-//         $stmt = $pdo->query($query);
-//         $ressources = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//     } catch (PDOException $e) {
-//             echo "Erreur de base de données :" . $e->getMessage();
-//         }
-// }
+if (isset($_POST['recuperer'])) {
+    try {
+        $query = "SELECT ressource_id, nom, type FROM ressources ORDER BY RAND() LIMIT 4 ";
+        $stmt = $pdo->query($query);
+        $ressources = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+            echo "Erreur de base de données :" . $e->getMessage();
+        }
+}
 
 // Réparer la base
 if (isset($_POST['reparer']) && $baseInfo !== false) {
@@ -91,28 +99,10 @@ if (isset($_POST['nourrir']['reparer'])) {
     }
 }
 
-// Se reposer
-if (isset($_POST['passer'])) {
-    if ($gameSave !== false) {
-        $jourActuel = (int) $gameSave['jour_actuel'];
-        saveGame($pdo, $playerId, $jourActuel + 1);
-        $gameSave = getGame($pdo, $playerId);
-    }
-}
-
 // if(isset($_POST['resetGameBTN'])) {
 //     resetGame();
 // }
 
-// Jour
-// for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
-    
-//     if ($jour_actuel === 30) {
-//         echo "Victoire";
-//         break;
-//     }
-//     echo $jour_actuel;
-// }
 ?>
 
 <!DOCTYPE html>
