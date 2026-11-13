@@ -12,7 +12,7 @@ $gameSave = getGame($pdo, $playerId);
 
 if ($gameSave === false) {
     createGame($pdo, $playerId);
-    $gameSave = $getGame($pdo, $playerId);
+    $gameSave = getGame($pdo, $playerId);
 }
 // Jour suivant nextDay
 // $nextDay = ($gameSave !== false);
