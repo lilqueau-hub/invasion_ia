@@ -9,28 +9,29 @@ $playerInfo = getPlayer($pdo, $playerId);
 $baseInfo = infoBase($pdo, $playerId);
 // Sauvegarde du joueur
 $gameSave = getGame($pdo, $playerId);
+// Jour suivant nextDay
+$nextDay = ($gameSave !== false);
 
-//passer au jour suivant
-if(isset($_POST['nextdayBTN']) && $gameSave !== false) {
-    $jourActuel = (int) $gameSave['jour_actuel'];
-
-    $nouveauJour = $jourActuel + 1;
-
-    saveGame($pdo, $playerId, $nouveauJour);
-
+// Passer au jour suivant
+if(isset($_POST['nextdayBTN']) && $nextDay !==false) {
+    $jourActuel = (int) $gameSave ['jour_actuel'];
+    $nextDay = $jourActuel + 1; 
+    saveGame($pdo, $playerId, $nextDay);
     $gameSave = getGame($pdo, $playerId);
 }
 
+
+//Passer au jour suivant
+// if(isset($_POST['nextdayBTN']) && $gameSave !== false) {
+//     $jourActuel = (int) $gameSave['jour_actuel'];
+//     $nouveauJour = $jourActuel + 1;
+//     saveGame($pdo, $playerId, $nouveauJour);
+//     $gameSave = getGame($pdo, $playerId);
+// }
+
 // Ressources
 $ressources = [];
-$allRessources = allRessources($pdo, $playerId);
 // $addRessources = addRessources($pdo, $playerId);
-
-// Sauvegarder le jeu
-// if (isset($_POST['saveGameBTN'])) {
-//     saveGame();
-// }
-// $GameSave = saveGame();
 
 // Récupérer des ressources
 if (isset($_POST['recuperer'])) {
@@ -64,7 +65,7 @@ if (isset($_POST['nourrir']))
 // Inventaire 
 if (isset($_POST['stocker'])) {
     $playerId =(int) $_POST['player_id'];
-    $inventoryRessources= inventoryRessources($pdo);
+    $inventoryRessources = inventoryRessources($pdo, $playerId);
     $ressources = allRessources($pdo);
 
     if (isset($_SESSION['inventoryRessources'][$ressources][$inventoryRessources])) {
@@ -92,10 +93,11 @@ if (isset($_POST['nourrir']['reparer'])) {
 
 // Se reposer
 if (isset($_POST['passer'])) {
-    $playerId =(int) $_POST['player_id'];
-    $nextDay = nextDay($pdo);
-
-    if(isset($_SESSION['nextDay']));
+    if ($gameSave !== false) {
+        $jourActuel = (int) $gameSave['jour_actuel'];
+        saveGame($pdo, $playerId, $jourActuel + 1);
+        $gameSave = getGame($pdo, $playerId);
+    }
 }
 
 // if(isset($_POST['resetGameBTN'])) {
@@ -142,11 +144,12 @@ if (isset($_POST['passer'])) {
     
     <div class="inventory">
         <h4>Inventaire :</h4>
-        <?php if (isset($_GET['nom']) && $search !== ''): ?>
-            <?php if(!empty($ressource)): ?>
-            <?php foreach($ressources as $ressource) ?>
-                <p><?= htmlspecialchars($ressource['ressource_id']['nom']['type']); ?></p>
-            <?php endif; ?>
+        <?php if (!empty($ressources)): ?>
+            <?php foreach ($ressources as $ressource): ?>
+                <p><?= htmlspecialchars((string) $ressource['nom']) ?> - <?= htmlspecialchars((string) $ressource['type']) ?></p>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>Aucune ressource disponible pour le moment.</p>
         <?php endif; ?>
     </div>    
 
@@ -185,7 +188,7 @@ if (isset($_POST['passer'])) {
     
 
     <!-- Quitter la partie -->
-    <button><a href="/../accueil.php">Quitter la partie</a></button>
+    <button><a href="">Quitter la partie</a></button>
 
 </body>
 </html>

@@ -39,7 +39,7 @@ function createGame(PDO $pdo, int $playerId): void
     ]);
 }
 
-// Sauvegarder la partie
+// Sauvegarder
 function saveGame(PDO $pdo, int $playerId, int $jour_actuel): void
 {
     $sql = "UPDATE partie SET jour_actuel = :jour_actuel WHERE player_id = :player_id";
@@ -71,6 +71,8 @@ function getGame(PDO $pdo, int $playerId): array|false
 //     return $stmt->fetch(PDO::FETCH_ASSOC);
 // }
 
+
+// Informations sur l'abris
 function infoBase(PDO $pdo, int $playerId): array|false
 {
     $sql = "SELECT b.base_id, b.durability
@@ -122,14 +124,44 @@ function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite)
     ]);
 }
 
-// Passer au jour suivant
-// function nextDay(PDO $pdo, int $jour_actuel):void {
-//     $sql = "UPDATE partie SET jour_actuel = :jour_actuel WHERE player_id = :player_id";
-//     $stmt = $pdo->prepare($sql);
-//     $stmt->execute([
-//         'jour_actuel' => $jour_actuel,
-//         'player_id' => $playerId]);
+// Conséquence des actions 
+function loseStamina (PDO $pdo, int $staminaBar): array 
+{
+    $sql = "SELECT p.stamina_bar, r.ressources
+        FROM player p
+        JOIN ressources r ON r.ressources = p.ressources
+        WHERE r.stamina_bar = :stamina_bar";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['stamina_bar' => $staminaBar]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+// function losePlayer (PDO $pdo, int $playerId): array 
+// {
+//     $sql = "SELECT p.health_bar, p.stamina_bar
+//             FROM player p
+//             
 // }
+// player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id"
+
+// Conséquences d'actions sur diff ressource
+
+
+// Passer au jour suivant
+function nextDay(PDO $pdo, int $playerId, int $baseId, $baseDurability, int $jour_actuel, $stamina_bar, $health_bar) : void
+{
+    $sql = "UPDATE partie SET jour_actuel WHERE player_id = :player_id, stamina_bar = :stamina_bar, health_bar = :health_bar, base_id =:base_id, base_durability=: base_durability";
+    $stmt = $pdo->prepare($sql);
+    $stmt-> execute([
+        'jour_actuel' => $jour_actuel +1,
+        'player_id' => $playerId,
+        'stamina_bar' => $stamina_bar +100,
+        'health_bar' => $health_bar -15,
+        'base_id' => $baseId,
+        'durability' => $baseDurability
+    ]);
+}
 
 // function resetGame(PDO $pdo, int $partieId, int $playerId):array
 // {
@@ -142,13 +174,3 @@ function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite)
 
 // }
 
-// Diminuer les PDV et l'énergie
-// function losePlayer (PDO $pdo, int $playerId): array 
-// {
-//     $sql = "SELECT p.health_bar, p.stamina_bar
-//             FROM player p
-//             
-// }
-// player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id"
-
-// Conséquences d'actions sur diff ressource

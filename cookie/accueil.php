@@ -19,13 +19,29 @@ if (isset($_GET['nom'])) {
 }
 
 if (isset($_GET['createGame'])) {
-    $createGame = createGame($pdo, $playerId);
+    $createGame = trim($_GET['createGame']);
+    
+    if($createGame !=='') {
+        $players = getPlayer($pdo, $createGame);
+    }
 }
 // $GetGame = getGame();
 // Déconnexion
 // if (isset($_POST['deconnexion.php'])) {
 //     deconnexionBtn();
 // }
+
+// function createGame(PDO $pdo, int $playerId): void
+// {
+//     $sql = "INSERT INTO partie (player_id, jour_actuel)
+//             VALUES (:player_id, 1)";
+
+//     $stmt = $pdo->prepare($sql);
+//     $stmt->execute([
+//         'player_id' => $playerId
+//     ]);
+// }
+
 
 ?>
 <!DOCTYPE html>
