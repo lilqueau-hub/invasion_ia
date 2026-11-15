@@ -14,28 +14,19 @@ if ($gameSave === false) {
     createGame($pdo, $playerId);
     $gameSave = getGame($pdo, $playerId);
 }
-// Jour suivant nextDay
-// $nextDay = ($gameSave !== false);
+
+nextDay($pdo, $playerId, $baseInfo['base_id'], $baseInfo['durability'], (int) $gameSave['jour_actuel'], (int) $playerInfo['stamina_bar'], (int) $playerInfo['health_bar']);
 
 // Passer au jour suivant
-if(isset($_POST['nextdayBTN']) && $gameSave !== false) {
-    $jourActuel = (int) $gameSave ['jour_actuel'];
-    $nextDay = $jourActuel + 1; 
-    saveGame($pdo, $playerId, $nextDay);
-    $gameSave = getGame($pdo, $playerId);   
-} else {
-    echo "Aucune partie trouvé";
+if (isset($_POST['nextdayBTN']) && $gameSave !== false) {
+    $jourActuel = (int) $gameSave['jour_actuel'];
+    if ($jourActuel >= 30) {
+        endGame($pdo, $playerId, $jourActuel);
+    } else {
+        nextDay($pdo, $playerId, (int) ($baseInfo['base_id'] ?? 0), (int) ($baseInfo['durability'] ?? 0), $jourActuel, (int) ($playerInfo['stamina_bar'] ?? 0), (int) ($playerInfo['health_bar'] ?? 0));
+    }
+    $gameSave = getGame($pdo, $playerId);
 }
-
-// for ($jour_actuel = 1; $jour_actuel <= 30; $jour_actuel++) {
-    
-//     if ($jour_actuel === 30) {
-//         echo "Victoire";
-//         break;
-//     }
-//     echo $jour_actuel;
-// }
-
 
 // Ressources
 $ressources = [];

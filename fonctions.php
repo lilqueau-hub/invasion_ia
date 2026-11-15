@@ -149,17 +149,29 @@ function loseStamina (PDO $pdo, int $staminaBar): array
 
 
 // Passer au jour suivant
-function nextDay(PDO $pdo, int $playerId, int $baseId, $baseDurability, int $jour_actuel, $stamina_bar, $health_bar) : void
+function nextDay(PDO $pdo, int $playerId, int $baseId, int $baseDurability, int $jour_actuel, int $stamina_bar, int $health_bar): void
 {
-    $sql = "UPDATE partie SET jour_actuel WHERE player_id = :player_id, stamina_bar = :stamina_bar, health_bar = :health_bar, base_id =:base_id, base_durability=: base_durability";
+    $newJour = $jour_actuel + 1;
+    $sql = "UPDATE partie SET jour_actuel = :jour_actuel WHERE player_id = :player_id";
     $stmt = $pdo->prepare($sql);
-    $stmt-> execute([
-        'jour_actuel' => $jour_actuel +1,
+    $stmt->execute([
+        'jour_actuel' => $newJour,
         'player_id' => $playerId,
-        'stamina_bar' => $stamina_bar +100,
-        'health_bar' => $health_bar -15,
-        'base_id' => $baseId,
-        'durability' => $baseDurability
+    ]);
+
+    if ($newJour >= 30) {
+        endGame($pdo, $playerId, $newJour);
+    }
+}
+
+function endGame(PDO $pdo, int $playerId, ?int $jour_actuel = null): void
+{
+    $lastDay = $jour_actuel !== null ? max(30, $jour_actuel) : 30;
+    $sql = "UPDATE partie SET jour_actuel = :jour_actuel WHERE player_id = :player_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'jour_actuel' => $lastDay,
+        'player_id' => $playerId,
     ]);
 }
 
