@@ -110,6 +110,56 @@ function inventoryRessources(PDO $pdo, int $playerId): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Ressources différentes ayant un impact différent selon leur type sur la santé et l'endurance du joueur
+function impactRessources(PDO $pdo, int $playerId, string $type, int $baseId, int $durability, int $quantite ): void {
+    switch ($type) {
+        case 'nourriture':
+            $sql = "UPDATE player SET health_bar = LEAST(100, health_bar + :gain) 
+            WHERE player_id = :player_id";
+            break;
+        
+        case 'materiaux':
+            $sql = "UPDATE base SET durability = LEAST(100, durability + :gain) 
+            WHERE base_id = :base_id";
+            break;
+        default:
+            return;
+    }   
+
+    $gain = $quantite *10;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'gain' => $gain,
+        'durability' => $durability,
+        'player_id' => $playerId,
+        'base_id' => $baseId
+    ]);
+}
+
+// appliquer les effets nourriture sur santé du joueur
+function effectFood(PDO $pdo, int $playerId, int $health_bar): void
+{
+    $sql = "UPDATE player SET health_bar = LEAST(100, health_bar + :health_gain)
+            WHERE player_id = :player_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'health_gain' => $health_bar,
+        'player_id' => $playerId
+    ]);
+}
+// appliquer les effets matériaux sur la durabilité de l'abris
+function effectMaterials (PDO $pdo, int $baseId, int $durability): void
+{
+    $sql = "UPDATE base SET durability = LEAST(100, durability + :durability_gain)
+            WHERE base_id = :base_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'durability_gain' => $durability,
+        'base_id' => $baseId
+    ]);
+}
+
 // ajouter de l'inventaire
 function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite): void
 {

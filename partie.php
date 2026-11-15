@@ -1,6 +1,6 @@
 <?php 
 session_start();
-require_once __DIR__ . '../fonctions.php';
+require_once __DIR__ . '/fonctions.php';
 
 $playerId = (int) $_SESSION['player_id'];
 // Informations du joueur
@@ -46,19 +46,15 @@ if (isset($_POST['recuperer'])) {
         }
 }
 
-// Réparer la base
+// Les effets ne sont appliqués qu'après l'action correspondante.
 if (isset($_POST['reparer']) && $baseInfo !== false) {
-    $baseInfo['durability'] = min(100, (int) $baseInfo['durability'] + 10);
+    effectMaterials($pdo, (int) $baseInfo['base_id'], 10);
+    $baseInfo = infoBase($pdo, $playerId);
 }
-// Se nourrir
-if (isset($_POST['nourrir'])) 
-    {
-    if ($playerInfo) {
-        $playerInfo['health_bar'] = min(
-            100,
-            (int) $playerInfo['health_bar'] + 10
-            );
-    }      
+
+if (isset($_POST['nourrir']) && $playerInfo !== false) {
+    effectFood($pdo, $playerId, 10);
+    $playerInfo = getPlayer($pdo, $playerId);
 }
 
 // Inventaire 
@@ -141,7 +137,7 @@ if (isset($_POST['nourrir']['reparer'])) {
             <p>Durabilité: <?= htmlspecialchars((string) $baseInfo['durability']) ?></p>
         <?php endif; ?>
         <form method="POST">
-            <button type="submit" name="addRessources">Réparer la base</button>
+            <button type="submit" name="reparer">Réparer la base</button>
         </form>
         
         <h4>Nourriture</h4>
