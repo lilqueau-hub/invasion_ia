@@ -5,8 +5,6 @@ require_once __DIR__ . '/fonctions.php';
 $playerId = (int) $_SESSION['player_id'];
 // Informations du joueur
 $playerInfo = getPlayer($pdo, $playerId);
-// Information de l'abris
-$baseInfo = infoBase($pdo, $playerId);
 // Sauvegarde du joueur
 $gameSave = getGame($pdo, $playerId);
 
@@ -15,15 +13,23 @@ if ($gameSave === false) {
     $gameSave = getGame($pdo, $playerId);
 }
 
-nextDay($pdo, $playerId, $baseInfo['base_id'], $baseInfo['durability'], (int) $gameSave['jour_actuel'], (int) $playerInfo['stamina_bar'], (int) $playerInfo['health_bar']);
+// Information de l'abris
+$baseInfo = infoBase($pdo, $playerId);
+if ($baseInfo === false && $gameSave !== false) {
+    createBase($pdo, (int) $gameSave['partie_id']);
+    $baseInfo = infoBase($pdo, $playerId);
+}
 
 // Passer au jour suivant
 if (isset($_POST['nextdayBTN']) && $gameSave !== false) {
     $jourActuel = (int) $gameSave['jour_actuel'];
+
     if ($jourActuel >= 30) {
         endGame($pdo, $playerId, $jourActuel);
     } else {
         nextDay($pdo, $playerId, (int) ($baseInfo['base_id'] ?? 0), (int) ($baseInfo['durability'] ?? 0), $jourActuel, (int) ($playerInfo['stamina_bar'] ?? 0), (int) ($playerInfo['health_bar'] ?? 0));
+        loseHealth($pdo, $playerId, 10);
+        $playerInfo = getPlayer($pdo, $playerId);
     }
     $gameSave = getGame($pdo, $playerId);
 }
@@ -49,12 +55,15 @@ if (isset($_POST['recuperer'])) {
 // Reparer la base
 if (isset($_POST['reparer']) && $baseInfo !== false) {
     impactRessources($pdo, $playerId, 'materiaux', (int) $baseInfo['base_id'], 1);
+    loseStamina($pdo, $playerId, 10);
     $baseInfo = infoBase($pdo, $playerId);
+    $playerInfo = getPlayer($pdo, $playerId);
 }
 
 // Se nourrir
 if (isset($_POST['nourrir']) && $playerInfo !== false) {
     impactRessources($pdo, $playerId, 'nourriture', (int) ($baseInfo['base_id'] ?? 0), 1);
+    loseStamina($pdo, $playerId, 10);
     $playerInfo = getPlayer($pdo, $playerId);
 }
 

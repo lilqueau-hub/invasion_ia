@@ -37,6 +37,16 @@ function createGame(PDO $pdo, int $playerId): void
     $stmt->execute([
         'player_id' => $playerId
     ]);
+
+    createBase($pdo, (int) $pdo->lastInsertId());
+}
+
+function createBase(PDO $pdo, int $partieId): void
+{
+    $sql = "INSERT INTO base (partie_id, durability)
+            VALUES (:partie_id, 50)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['partie_id' => $partieId]);
 }
 
 // Sauvegarder
@@ -182,17 +192,29 @@ function addRessources(PDO $pdo, int $partieId, int $ressourceId, int $quantite)
 }
 
 // Conséquence des actions 
-function loseStamina (PDO $pdo, int $staminaBar): array 
+function loseStamina(PDO $pdo, int $playerId, int $amount): void
 {
-    $sql = "SELECT p.stamina_bar, r.ressources
-        FROM player p
-        JOIN ressources r ON r.ressources = p.ressources
-        WHERE r.stamina_bar = :stamina_bar";
+    $sql = "UPDATE player
+            SET stamina_bar = GREATEST(0, stamina_bar - :amount)
+            WHERE player_id = :player_id";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(['stamina_bar' => $staminaBar]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute([
+        'amount' => $amount,
+        'player_id' => $playerId,
+    ]);
 }
-
+// Perte de santé du joueur
+function loseHealth(PDO $pdo, int $playerId, int $amount): void
+{
+    $sql = "UPDATE player
+            SET health_bar = GREATEST(0, health_bar - :amount)
+            WHERE player_id = :player_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'amount' => $amount,
+        'player_id' => $playerId,
+    ]);
+}
 
 // function losePlayer (PDO $pdo, int $playerId): array 
 // {
@@ -201,8 +223,6 @@ function loseStamina (PDO $pdo, int $staminaBar): array
 //             
 // }
 // player_id, nom, health_bar, stamina_bar FROM player WHERE player_id = :player_id"
-
-// Conséquences d'actions sur diff ressource
 
 
 // Passer au jour suivant
