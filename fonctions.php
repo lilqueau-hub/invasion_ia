@@ -111,30 +111,37 @@ function inventoryRessources(PDO $pdo, int $playerId): array
 }
 
 // Ressources différentes ayant un impact différent selon leur type sur la santé et l'endurance du joueur
-function impactRessources(PDO $pdo, int $playerId, string $type, int $baseId, int $durability, int $quantite ): void {
+function impactRessources(PDO $pdo, int $playerId, string $type, int $baseId, int $quantite): void
+{
+    $gain = $quantite * 10;
+
     switch ($type) {
         case 'nourriture':
-            $sql = "UPDATE player SET health_bar = LEAST(100, health_bar + :gain) 
-            WHERE player_id = :player_id";
+            $sql = "UPDATE player
+                    SET health_bar = LEAST(100, health_bar + :gain)
+                    WHERE player_id = :player_id";
+            $params = [
+                'gain' => $gain,
+                'player_id' => $playerId,
+            ];
             break;
-        
+
         case 'materiaux':
-            $sql = "UPDATE base SET durability = LEAST(100, durability + :gain) 
-            WHERE base_id = :base_id";
+            $sql = "UPDATE base
+                    SET durability = LEAST(100, durability + :gain)
+                    WHERE base_id = :base_id";
+            $params = [
+                'gain' => $gain,
+                'base_id' => $baseId,
+            ];
             break;
+
         default:
             return;
-    }   
-
-    $gain = $quantite *10;
+    }
 
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'gain' => $gain,
-        'durability' => $durability,
-        'player_id' => $playerId,
-        'base_id' => $baseId
-    ]);
+    $stmt->execute($params);
 }
 
 // appliquer les effets nourriture sur santé du joueur

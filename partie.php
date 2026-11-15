@@ -46,14 +46,15 @@ if (isset($_POST['recuperer'])) {
         }
 }
 
-// Les effets ne sont appliqués qu'après l'action correspondante.
+// Reparer la base
 if (isset($_POST['reparer']) && $baseInfo !== false) {
-    effectMaterials($pdo, (int) $baseInfo['base_id'], 10);
+    impactRessources($pdo, $playerId, 'materiaux', (int) $baseInfo['base_id'], 1);
     $baseInfo = infoBase($pdo, $playerId);
 }
 
+// Se nourrir
 if (isset($_POST['nourrir']) && $playerInfo !== false) {
-    effectFood($pdo, $playerId, 10);
+    impactRessources($pdo, $playerId, 'nourriture', (int) ($baseInfo['base_id'] ?? 0), 1);
     $playerInfo = getPlayer($pdo, $playerId);
 }
 
